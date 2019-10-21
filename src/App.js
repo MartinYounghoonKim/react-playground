@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import MyComponent from './MyComponent';
 import MyComponent1 from './MyComponent1';
+import Parent from "./RefExample/Parent";
 
 class App extends Component {
   constructor (props) {
@@ -9,7 +10,6 @@ class App extends Component {
     this.state = {
       value: 0,
     }
-    console.log('constructor 실행');
   }
   componentDidMount () {
     console.log('componentDidMount 실행');
@@ -28,6 +28,7 @@ class App extends Component {
         {this.state.value < 10 && <MyComponent value={this.state.value}/>}
         <div ref={ref => this.div = ref }></div>
         <button onClick={this.handleClick}>클릭</button>
+        <Parent />
       </div>
     );
   }
