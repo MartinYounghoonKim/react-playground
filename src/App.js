@@ -3,6 +3,7 @@ import './App.css';
 import MyComponent from './MyComponent';
 import MyComponent1 from './MyComponent1';
 import Parent from "./RefExample/Parent";
+import ClassComponent from "./hooksExample/hooksExample"
 
 class App extends Component {
   constructor (props) {
@@ -29,6 +30,7 @@ class App extends Component {
         <div ref={ref => this.div = ref }></div>
         <button onClick={this.handleClick}>클릭</button>
         <Parent />
+        <ClassComponent />
       </div>
     );
   }
