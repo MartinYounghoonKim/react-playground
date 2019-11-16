@@ -3,7 +3,7 @@ import './App.css';
 import MyComponent from './MyComponent';
 import MyComponent1 from './MyComponent1';
 import Parent from "./RefExample/Parent";
-import ClassComponent from "./hooksExample/hooksExample"
+import ClassComponent from "./hooksExample/hooksExample1"
 
 class App extends Component {
   constructor (props) {
