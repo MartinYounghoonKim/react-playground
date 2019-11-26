@@ -1,5 +1,5 @@
-import {put, call, take, takeEvery, fork, takeLatest, cancel, cancelled} from "@redux-saga/core/effects";
-import {api, api1, api2} from "./example";
+import {delay, all, put, call, take, race, fork, takeLatest, cancel, cancelled} from "@redux-saga/core/effects";
+import {api, api1, api2, api3} from "./example";
 
 export const loginAction = () => ({
   type: "LOGIN"
@@ -11,6 +11,7 @@ export const logoutAction = () => ({
 export const tryAction = () => ({
   type: "TRY"
 });
+
 function* watchEveryAction () {
   while (true) {
     const action = yield take("*");
@@ -51,7 +52,35 @@ function* loginFlow() {
   }
 }
 
+export const pullingAction = () => ({
+  type: "PULLING"
+});
+
+function* pulling () {
+  yield all([
+    call(api3),
+    call(api2)
+  ])
+}
+
+export const racingAction = () => ({
+  type: "RACING"
+});
+
+function* racing () {
+  const {posts, timeout1} = yield race({
+    posts: call(api2, '/posts'),
+    timeout: delay(2000)
+  });
+  console.log(posts, timeout1);
+  if (posts)
+    put({type: 'POSTS_RECEIVED'})
+  else
+    put({type: 'TIMEOUT_ERROR'})
+}
 export default function* () {
   yield fork(watchEveryAction);
   yield takeLatest("LOGIN", loginFlow);
+  yield takeLatest("PULLING", pulling);
+  yield takeLatest("RACING", racing);
 }

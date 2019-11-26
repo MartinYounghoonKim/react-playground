@@ -20,6 +20,15 @@ export function api2 () {
     setTimeout(function () {
       console.log("API2 호출 ");
       resolve(true)
-    }, 2000);
+    }, 3000);
+  })
+}
+
+export function api3 () {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      console.log("API3 리젝 ");
+      reject("Oops!!")
+    }, 3000);
   })
 }
