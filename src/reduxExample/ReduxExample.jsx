@@ -1,6 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
-import {loginAction, logoutAction, pullingAction, tryAction, racingAction} from "../reduxs/saga";
+import {
+  loginAction,
+  logoutAction,
+  pullingAction,
+  tryAction,
+  racingAction,
+  yieldTest,
+  forkTestAction
+} from "../reduxs/saga";
 
 class ReduxExample extends React.Component {
   componentDidMount() {
@@ -22,7 +30,13 @@ class ReduxExample extends React.Component {
         <button type="button" onClick={this.props.racingAction}>
           RACING 테스트
         </button>
-        ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹ
+
+        <button type="button" onClick={this.props.yieldTest}>
+          YIELD 테스트
+        </button>
+        <button type="button" onClick={this.props.forkTestAction}>
+          FORK 테스트
+        </button>
       </div>
     )
   }
@@ -37,7 +51,9 @@ const mapDispatchToProps = {
   logoutAction,
   tryAction,
   pullingAction,
-  racingAction
+  racingAction,
+  yieldTest,
+  forkTestAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReduxExample);

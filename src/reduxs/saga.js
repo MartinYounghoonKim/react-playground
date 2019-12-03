@@ -1,4 +1,4 @@
-import {delay, all, put, call, take, race, fork, takeLatest, cancel, cancelled} from "@redux-saga/core/effects";
+import {delay, all, put, call, take, race, fork, takeLatest, cancel, cancelled, spawn} from "@redux-saga/core/effects";
 import {api, api1, api2, api3} from "./example";
 
 export const loginAction = () => ({
@@ -10,6 +10,14 @@ export const logoutAction = () => ({
 
 export const tryAction = () => ({
   type: "TRY"
+});
+
+export const yieldTest = () => ({
+  type: "YIELD_TEST"
+});
+
+export const forkTestAction = () => ({
+  type: "FORK_TEST"
 });
 
 function* watchEveryAction () {
@@ -72,15 +80,66 @@ function* racing () {
     posts: call(api2, '/posts'),
     timeout: delay(2000)
   });
-  console.log(posts, timeout1);
   if (posts)
     put({type: 'POSTS_RECEIVED'})
   else
     put({type: 'TIMEOUT_ERROR'})
 }
+
+function* yieldTest1 () {
+  return "yieldTest1";
+}
+
+function* yieldTest2 () {
+  return "yieldTest2";
+}
+
+function* yieldTest3 () {
+  return "yieldTest3";
+}
+
+function* severalYield () {
+  const yield1 = yield* yieldTest1();
+  console.log(yield1);
+
+  const yield2 = yield* yieldTest2();
+  console.log(yield2);
+
+  const yield3 = yield* yieldTest3();
+  console.log(yield3);
+}
+
+function* forkedCollections () {
+  try {
+    // fork 모델의 경우
+    const successApi = yield spawn(forked1);
+    const failedApi = yield spawn(forked2);
+  } catch (e) {
+    console.log("[Logs] =>");
+    console.log(e);
+  }
+  delay(1000, console.log("end"))
+}
+
+function* forkMain () {
+  yield call(forkedCollections);
+}
+
+function* forked1 () {
+  yield call(api1);
+  yield put({ type: "forked1_completed" });
+}
+
+function* forked2 () {
+  yield call(api3);
+  yield put({ type: "forked2_cancelled" });
+}
+
 export default function* () {
   yield fork(watchEveryAction);
   yield takeLatest("LOGIN", loginFlow);
   yield takeLatest("PULLING", pulling);
   yield takeLatest("RACING", racing);
+  yield takeLatest("YIELD_TEST", severalYield);
+  yield takeLatest("FORK_TEST", forkMain);
 }
