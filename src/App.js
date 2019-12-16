@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import './App.css';
-import ReduxExample from "./reduxExample/ReduxExample";
+import React, { Component } from "react";
+import "./App.css";
+import HooksExample3 from "./hooksExample/hooksExample3"
 
 class App extends Component {
   constructor (props) {
@@ -17,7 +17,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <ReduxExample/>
+        <HooksExample3 />
       </div>
     );
   }
